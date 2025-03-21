@@ -55,7 +55,7 @@
       display: block;
       margin-top: 15px;
     }
-    input {
+    input, select {
       width: 100%;
       padding: 12px;
       margin-top: 8px;
@@ -82,6 +82,10 @@
       color: #FF3333; /* أحمر لتمييز الملاحظات */
       margin-top: 20px;
     }
+    .disabled {
+      background-color: #d3d3d3;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -90,7 +94,6 @@
   <div class="container active" id="mainMenu">
     <div class="header">خبير</div>
     <button class="button" onclick="showPage('minerals')">🔬 صنع وصفات باستخدام المعادن</button>
-    <button class="button" onclick="showPage('gh_kh')">⚖ صنع وصفات عن طريق GH و KH</button>
   </div>
 
   <!-- صفحة المعادن (حساب المعادن عبر إدخال المغنيسيوم والصوديوم) -->
@@ -99,33 +102,32 @@
 
     <label for="recipeSelect">اختر وصفة جاهزة:</label>
     <select id="recipeSelect" onchange="loadRecipe()">
-      <option value="">اختر وصفة</option>
+      <option value="custom">وصفة مخصصة</option>
       <option value="moonlight">Moonlight</option>
       <option value="sunrise">Sunrise</option>
       <option value="ocean">Ocean</option>
       <option value="hinDown1">Hin Down 1</option>
       <option value="hinDown2">Hin Down 2</option>
       <option value="barista">Barista</option>
-      <option value="custom">وصفة مخصصة</option>
     </select>
 
     <label for="mg">أدخل كمية MgSO₄ (المغنيسيوم) بالجرام:</label>
-    <input type="number" id="mg" step="0.01" oninput="calculateMinerals()">
+    <input type="number" id="mg" step="0.01" oninput="calculateMinerals()" />
 
     <label for="na">أدخل كمية NaHCO₃ (الصوديوم) بالجرام:</label>
-    <input type="number" id="na" step="0.01" oninput="calculateMinerals()">
+    <input type="number" id="na" step="0.01" oninput="calculateMinerals()" />
 
     <label for="liters">عدد اللترات:</label>
-    <input type="number" id="liters" min="0.5" step="0.1" value="1" oninput="calculateMinerals()">
+    <input type="number" id="liters" min="0.5" step="0.1" value="1" oninput="calculateMinerals()" />
 
     <div class="result" id="resultsMinerals">أدخل القيم لحساب ناتج GH و KH.</div>
 
     <div class="notice" id="recipeNotice"></div>
-
-    <button class="button" onclick="goHome()">🔙 العودة للقائمة</button>
+<button class="button" onclick="goHome()">🔙 العودة للقائمة</button>
   </div>
 
-  <script>// إظهار الصفحة المطلوبة
+  <script>
+    // إظهار الصفحة المطلوبة
     function showPage(page) {
       document.querySelectorAll(".container").forEach(el => el.classList.remove("active"));
       document.getElementById(page).classList.add("active");
@@ -151,36 +153,67 @@
       document.getElementById("resultsMinerals").innerHTML = 
         `<p><strong>GH (العسر العام):</strong> ${ghResult.toFixed(1)}</p>
         <p><strong>KH (القلوية):</strong> ${khResult.toFixed(1)}</p>`;
+
+      displayRecipeEffect(mg, na); // عرض تأثير الوصفة
+    }
+
+    // عرض تأثير الوصفة بناءً على القيم المدخلة
+    function displayRecipeEffect(mg, na) {
+      let effectText = "";
+      
+      if (mg > 0.1 && na > 0.1) {
+        effectText = "الوصفة تحتوي على مستويات عالية من المغنيسيوم والصوديوم، مما قد يؤدي إلى نكهة أكثر حموضة ومرارة.";
+      } else if (mg > 0.1) {
+        effectText = "الوصفة تحتوي على مستوى مغنيسيوم مرتفع، مما قد يعزز الحلاوة ويقلل الحموضة.";
+      } else if (na > 0.1) {
+        effectText = "الوصفة تحتوي على مستوى صوديوم مرتفع، مما قد يزيد من مرارة القهوة.";
+      } else {
+        effectText = "الوصفة تحتوي على توازن معتدل بين المغنيسيوم والصوديوم، مما قد يعطي نكهة متوازنة.";
+      }
+
+      document.getElementById("recipeNotice").innerHTML = effectText;
     }
 
     // تحميل الوصفة المحددة من القائمة
     function loadRecipe() {
       var recipe = document.getElementById("recipeSelect").value;
       let noticeText = '';
-      if (recipe === "moonlight") {
-        document.getElementById("mg").value = 0.089;
-        document.getElementById("na").value = 0.025;
-        noticeText = "الوصفة Moonlight تحتوي على مستوى مغنيسيوم وصوديوم معتدل. قد تجعل القهوة أكثر حموضة وتوازن النكهة بشكل جيد.";
-      } else if (recipe === "sunrise") {
-        document.getElementById("mg").value = 0.049;
-        document.getElementById("na").value = 0.134;
-        noticeText = "الوصفة Sunrise تحتوي على نسبة صوديوم مرتفعة قد تؤثر على الحلاوة وتزيد من المرارة.";
-      } else if (recipe === "ocean") {
-        document.getElementById("mg").value = 0.148;
-        document.getElementById("na").value = 0.151;
-        noticeText = "الوصفة Ocean تحتوي على نسبة مغنيسيوم وصوديوم مرتفعة. قد تضيف طعماً مرًا وحموضة عالية.";
-      } else if (recipe === "hinDown1") {
-        document.getElementById("mg").value = 0.243;
-        document.getElementById("na").value = 0.034;
-        noticeText = "الوصفة Hin Down 1 تحتوي على نسبة مغنيسيوم عالية، قد تعزز الحلاوة وتقلل من الحموضة.";
-      } else if (recipe === "hinDown2") {
-        document.getElementById("mg").value = 0.243;
-        document.getElementById("na").value = 0.052;
-        noticeText = "الوصفة Hin Down 2 تحتوي على توازن جيد بين المعادن، مما قد يساعد في تخفيف المرارة وتحسين النكهة.";
-      } else if (recipe === "barista") {
-        document.getElementById("mg").value = 0.197;
-        document.getElementById("na").value = 0.067;
-        noticeText = "الوصفة Barista مناسبة للباريستا، تحتوي على توازن بين الحلاوة والمرارة مع تأثير معتدل على النكهة.";
+
+      let inputs = document.querySelectorAll('input');
+      
+      // تمكين الحقول مباشرة عند اختيار "وصفة مخصصة"
+      if (recipe === "custom") {
+        inputs.forEach(input => input.disabled = false);  // تمكين الحقول
+        document.getElementById("recipeNotice").innerHTML = "يمكنك الآن تعديل الوصفة المخصصة.";
+      } else {
+        inputs.forEach(input => input.disabled = true);  // تعطيل الحقول
+
+        // تحديد التأثيرات الخاصة بالوصفات الجاهزة
+        if (recipe === "moonlight") {
+          document.getElementById("mg").value = 0.089;
+          document.getElementById("na").value = 0.025;
+          noticeText = "الوصفة Moonlight تحتوي على مستوى مغنيسيوم وصوديوم معتدل. قد تجعل القهوة أكثر حموضة وتوازن النكهة بشكل جيد.";
+        } else if (recipe === "sunrise") {
+          document.getElementById("mg").value = 0.049;
+          document.getElementById("na").value = 0.134;
+          noticeText = "الوصفة Sunrise تحتوي على نسبة صوديوم مرتفعة قد تؤثر على الحلاوة وتزيد من المرارة.";
+        } else if (recipe === "ocean") {
+          document.getElementById("mg").value = 0.148;
+          document.getElementById("na").value = 0.151;
+          noticeText = "الوصفة Ocean تحتوي على نسبة مغنيسيوم وصوديوم مرتفعة. قد تضيف طعماً مرًا وحموضة عالية.";
+        } else if (recipe === "hinDown1") {
+          document.getElementById("mg").value = 0.243;
+          document.getElementById("na").value = 0.034;
+          noticeText = "الوصفة Hin Down 1 تحتوي على نسبة مغنيسيوم عالية، قد تعزز الحلاوة وتقلل من الحموضة.";
+        } else if (recipe === "hinDown2") {
+          document.getElementById("mg").value = 0.243;
+          document.getElementById("na").value = 0.052;
+          noticeText = "الوصفة Hin Down 2 تحتوي على توازن جيد بين المعادن، مما قد يساعد في تخفيف المرارة وتحسين النكهة.";
+        } else if (recipe === "barista") {
+          document.getElementById("mg").value = 0.197;document.getElementById("na").
+value = 0.067;
+          noticeText = "الوصفة Barista مناسبة للباريستا، تحتوي على توازن بين الحلاوة والمرارة مع تأثير معتدل على النكهة.";
+        }
       }
 
       document.getElementById("recipeNotice").innerHTML = noticeText;
