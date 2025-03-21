@@ -9,64 +9,52 @@
       font-family: Arial, sans-serif;
       text-align: center;
       direction: rtl;
-      background-color: #f4f4f4;
-      color: #333333;
+      background-color: #f5f5f5; /* خلفية بيضاء */
+      color: #003366; /* لون الخط أزرق داكن */
     }
     .container {
       display: none;
       margin: 20px auto;
       padding: 20px;
-      background: #ffffff;
+      background: #ffffff; /* صندوق أبيض */
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       max-width: 400px;
-      border: 3px solid #e0e0e0;
+      border: 3px solid #00796b; /* إطار أخضر غامق */
     }
     .container.active {
       display: block;
-    }
-    .header {
-      font-size: 2em;
-      font-weight: bold;
-      color: #333;
-      padding: 20px 0;
-      text-align: center;
-      background: #ffffff;
-      border-bottom: 3px solid #e0e0e0;
     }
     input, select, button {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
       border-radius: 5px;
-      border: 1px solid #e0e0e0;
+      border: 1px solid #00796b;
     }
     button {
-      background: #f5f5f5;
-      color: #333333;
+      background: #00796b;
+      color: white;
       cursor: pointer;
       font-weight: bold;
-      border: 1px solid #e0e0e0;
     }
     button:hover {
-      background: #e0e0e0;
+      background: #004d40;
     }
     .result, .effects, .overall {
       margin: 10px 0;
       font-size: 1.1em;
       font-weight: bold;
     }
-    .effects p, .result p, .overall p {
-      color: #666666;
+    #recipeEffects {
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #00796b;
+      font-weight: normal;
     }
   </style>
 </head>
 <body>
-
-  <!-- اسم "خبير" في الجزء العلوي -->
-  <div class="header">
-    <span>خبير</span>
-  </div>
 
   <!-- الصفحة الرئيسية -->
   <div id="mainMenu" class="container active">
@@ -81,12 +69,12 @@
     <label for="recipeSelect">اختر الوصفة:</label>
     <select id="recipeSelect" onchange="loadRecipe()">
       <option value="custom">وصفة مخصصة</option>
-      <option value="moonlight">Moonlight</option>
-      <option value="sunrise">Sunrise</option>
-      <option value="ocean">Ocean</option>
-      <option value="hinDown1">Hin Down 1</option>
-      <option value="hinDown2">Hin Down 2</option>
-      <option value="barista">Barista</option>
+      <option value="moonlight">شروق القمر</option>
+      <option value="sunrise">شروق الشمس</option>
+      <option value="ocean">المحيط</option>
+      <option value="hinDown1">هين داون 1</option>
+      <option value="hinDown2">هين داون 2</option>
+      <option value="barista">باريستا</option>
     </select>
 
     <label for="liters">عدد اللترات:</label>
@@ -101,6 +89,7 @@
     <div class="effects" id="recipeNotice"></div>
     <div class="result" id="resultsMinerals"></div>
     <div class="overall" id="overallAcceptability"></div>
+    <div id="recipeEffects"></div> <!-- هنا سيتم عرض تأثيرات الوصفة -->
 
     <button onclick="goHome()">الرجوع</button>
   </div>
@@ -110,6 +99,7 @@
       document.querySelectorAll(".container").forEach(el => el.classList.remove("active"));
       document.getElementById(page).classList.add("active");
     }
+
     function goHome() {
       showPage("mainMenu");
     }
@@ -121,12 +111,12 @@
       let litersInput = document.getElementById("liters");
 
       const recipes = {
-        moonlight: { mg: 0.089, na: 0.025, description: "Moonlight يضيف لمسة من الحموضة المعتدلة مع توازن الفاكهة." },
-        sunrise: { mg: 0.049, na: 0.134, description: "Sunrise يزيد الفاكهية ويخفف من المرارة مع تأثيرات ليمونية." },
-        ocean: { mg: 0.148, na: 0.151, description: "Ocean يعطي إحساسًا قويًا بالحموضة والمنعش." },
-        hinDown1: { mg: 0.243, na: 0.034, description: "Hin Down 1 يضيف توازن بين الحموضة والمرارة مع نكهة غنية." },
-        hinDown2: { mg: 0.243, na: 0.052, description: "Hin Down 2 مشابه ولكن يضيف مرارة أعمق." },
-        barista: { mg: 0.197, na: 0.067, description: "Barista يوفر طعمًا متوازنًا مع لمسة من الفاكهية." }
+        moonlight: { mg: 0.089, na: 0.025, effects: "شروق القمر يزيد من الحامضية، ويزيد الفاكهية، ويقلل من المرارة." },
+        sunrise: { mg: 0.049, na: 0.134, effects: "شروق الشمس يزيد من الفاكهية، يقلل من المرارة، ويزيد الحامضية." },
+        ocean: { mg: 0.148, na: 0.151, effects: "المحيط يزيد من الحامضية، يقلل من الحلاوة، ويزيد الفاكهية." },
+        hinDown1: { mg: 0.243, na: 0.034, effects: "هين داون 1 يزيد من المرارة، ويزيد الحامضية، ويزيد الفاكهية." },
+        hinDown2: { mg: 0.243, na: 0.052, effects: "هين داون 2 يزيد من المرارة بشكل أكبر، ويزيد الحامضية، ويقلل الفاكهية." },
+        barista: { mg: 0.197, na: 0.067, effects: "باريستا يزيد من الفاكهية، يقلل من المرارة، ويزيد الحلاوة." }
       };
 
       if (recipe === "custom") {
@@ -135,13 +125,14 @@
         mgInput.value = "";
         naInput.value = "";
         document.getElementById("recipeNotice").innerHTML = "يمكنك تعديل الوصفة المخصصة.";
+        document.getElementById("recipeEffects").innerHTML = ""; // لا تظهر التأثيرات لو كانت الوصفة مخصصة
       } else {
         let liters = parseFloat(litersInput.value) || 1;
         mgInput.disabled = true;
         naInput.disabled = true;
         mgInput.value = (recipes[recipe].mg * liters).toFixed(3);
         naInput.value = (recipes[recipe].na * liters).toFixed(3);
-        document.getElementById("recipeNotice").innerHTML = recipes[recipe].description;
+        document.getElementById("recipeEffects").innerHTML = recipes[recipe].effects;
       }
       calculateMinerals();
     }
@@ -159,31 +150,26 @@
       let khResult = (na * (20.3 / 0.034)) / liters; // حساب KH (القلوية)
 
       document.getElementById("resultsMinerals").innerHTML = 
-        `<p>عسر الماء العام (GH): ${ghResult.toFixed(1)}</p>
-         <p>القلوية (KH): ${khResult.toFixed(1)}</p>`;
-
-      // تقديم تأثير المغنيسيوم والصوديوم مرة واحدة فقط
-      let effects = '';
-      if (mg > 0) {
-        effects += "<p>المغنيسيوم يمكن أن يضيف طابعًا حامضيًا معتدلًا وتوازنًا في النكهات.</p>";
-      }
-      if (na > 0) {
-        effects += "<p>الصوديوم قد يخفف من المرارة ويضيف نكهة أكثر حلاوة.</p>";
-      }
-      document.getElementById("recipeNotice").innerHTML = effects;
+        `<p style="color: #00796b;">عسر الماء العام (GH): ${ghResult.toFixed(1)}</p>
+         <p style="color: #ff9800;">القلوية (KH): ${khResult.toFixed(1)}</p>`;
 
       // تقييم الصلاحية بناءً على قيم GH و KH
-      let waterStatus = "صالح";
-      let waterColor = "#4CAF50"; // اللون الأخضر يعني صالح
+      let totalHardness = ghResult + khResult; // دمج العسر الكلي والقلوية
+      let waterStatus = "غير صالح للقهوة";
+      let waterColor = "#D32F2F"; // اللون الأحمر يعني غير صالح
 
-      if (ghResult > 100 || khResult > 100) {
+      if (totalHardness < 150) {
+        waterStatus = "صالح للقهوة";
+        waterColor = "#4CAF50"; // اللون الأخضر يعني صالح
+      } else if (totalHardness >= 150) {
         waterStatus = "غير صالح للقهوة";
         waterColor = "#D32F2F"; // اللون الأحمر يعني غير صالح
       }
 
       document.getElementById("overallAcceptability").innerHTML = 
-        `<p style="color: ${waterColor};">${waterStatus}</p>`;
+        `<p style="color: ${waterColor}; font-weight: bold;">${waterStatus}</p>`;
     }
   </script>
+
 </body>
 </html>
