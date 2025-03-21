@@ -123,23 +123,9 @@
     <div class="notice" id="recipeNotice"></div>
 
     <button class="button" onclick="goHome()">🔙 العودة للقائمة</button>
-  </div><!-- صفحة GH و KH -->
-  <div class="container" id="gh_kh">
-    <div class="header">صنع وصفات عن طريق GH و KH</div>
-
-    <label for="ghInput">أدخل قيمة GH:</label>
-    <input type="number" id="ghInput" oninput="calculateGHKH()">
-
-    <label for="khInput">أدخل قيمة KH:</label>
-    <input type="number" id="khInput" oninput="calculateGHKH()">
-
-    <div class="result" id="resultsGHKH">أدخل القيم لحساب الوصفة.</div>
-
-    <button class="button" onclick="goHome()">🔙 العودة للقائمة</button>
   </div>
 
-  <script>
-    // إظهار الصفحة المطلوبة
+  <script>// إظهار الصفحة المطلوبة
     function showPage(page) {
       document.querySelectorAll(".container").forEach(el => el.classList.remove("active"));
       document.getElementById(page).classList.add("active");
@@ -162,48 +148,44 @@
       let ghResult = (mg * (98.7 / 0.243)) / liters;
       let khResult = (na * (20.3 / 0.034)) / liters;
 
-      document.getElementById("resultsMinerals").innerHTML = GH: ${ghResult.toFixed(2)} | KH: ${khResult.toFixed(2)};
-
-      // إضافة التأثيرات على الوصفة
-      let recipeNotice = document.getElementById("recipeNotice");
-      let selectedRecipe = document.getElementById("recipeSelect").value;
-
-      switch (selectedRecipe) {
-        case "moonlight":
-          recipeNotice.innerHTML = "هذه الوصفة تزيد الفاكهية وتقلل الحامضية.";
-          break;
-        case "sunrise":
-          recipeNotice.innerHTML = "هذه الوصفة تزيد الحلاوة وتقلل المرارة.";
-          break;
-        case "ocean":
-          recipeNotice.innerHTML = "هذه الوصفة تزيد المرارة وتقلل الفاكهية.";
-          break;
-        case "hinDown1":
-          recipeNotice.innerHTML = "هذه الوصفة تزيد الحامضية وتقلل الفاكهية.";
-          break;
-        case "hinDown2":
-          recipeNotice.innerHTML = "هذه الوصفة تزيد الحلاوة وتزيد الفاكهية.";
-          break;
-        case "barista":
-          recipeNotice.innerHTML = "هذه الوصفة تزيد الحامضية وتزيد المرارة.";
-          break;
-        case "custom":
-          recipeNotice.innerHTML = "تأثير هذه الوصفة يعتمد على المدخلات.";
-          break;
-        default:
-          recipeNotice.innerHTML = "";
-      }
+      document.getElementById("resultsMinerals").innerHTML = 
+        `<p><strong>GH (العسر العام):</strong> ${ghResult.toFixed(1)}</p>
+        <p><strong>KH (القلوية):</strong> ${khResult.toFixed(1)}</p>`;
     }
 
-    // دالة حساب GH و KH بناءً على القيم المدخلة
-    function calculateGHKH() {
-      let gh = parseFloat(document.getElementById("ghInput").value) || 0;
-      let kh = parseFloat(document.getElementById("khInput").value) || 0;
+    // تحميل الوصفة المحددة من القائمة
+    function loadRecipe() {
+      var recipe = document.getElementById("recipeSelect").value;
+      let noticeText = '';
+      if (recipe === "moonlight") {
+        document.getElementById("mg").value = 0.089;
+        document.getElementById("na").value = 0.025;
+        noticeText = "الوصفة Moonlight تحتوي على مستوى مغنيسيوم وصوديوم معتدل. قد تجعل القهوة أكثر حموضة وتوازن النكهة بشكل جيد.";
+      } else if (recipe === "sunrise") {
+        document.getElementById("mg").value = 0.049;
+        document.getElementById("na").value = 0.134;
+        noticeText = "الوصفة Sunrise تحتوي على نسبة صوديوم مرتفعة قد تؤثر على الحلاوة وتزيد من المرارة.";
+      } else if (recipe === "ocean") {
+        document.getElementById("mg").value = 0.148;
+        document.getElementById("na").value = 0.151;
+        noticeText = "الوصفة Ocean تحتوي على نسبة مغنيسيوم وصوديوم مرتفعة. قد تضيف طعماً مرًا وحموضة عالية.";
+      } else if (recipe === "hinDown1") {
+        document.getElementById("mg").value = 0.243;
+        document.getElementById("na").value = 0.034;
+        noticeText = "الوصفة Hin Down 1 تحتوي على نسبة مغنيسيوم عالية، قد تعزز الحلاوة وتقلل من الحموضة.";
+      } else if (recipe === "hinDown2") {
+        document.getElementById("mg").value = 0.243;
+        document.getElementById("na").value = 0.052;
+        noticeText = "الوصفة Hin Down 2 تحتوي على توازن جيد بين المعادن، مما قد يساعد في تخفيف المرارة وتحسين النكهة.";
+      } else if (recipe === "barista") {
+        document.getElementById("mg").value = 0.197;
+        document.getElementById("na").value = 0.067;
+        noticeText = "الوصفة Barista مناسبة للباريستا، تحتوي على توازن بين الحلاوة والمرارة مع تأثير معتدل على النكهة.";
+      }
 
-      let result = GH: ${gh} | KH: ${kh};
-      document.getElementById("resultsGHKH").innerHTML = result;
+      document.getElementById("recipeNotice").innerHTML = noticeText;
+      calculateMinerals();
     }
   </script>
-
 </body>
 </html>
