@@ -3,111 +3,82 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>خبير</title>
-  <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+  <title>إعداد مياه القهوة</title>
   <style>
     body {
-      font-family: 'Cairo', sans-serif;
-      direction: rtl;
-      background: #FFFFFF; /* خلفية بيضاء */
-      color: #333333; /* نص بلون داكن */
+      font-family: Arial, sans-serif;
       text-align: center;
-      padding: 20px;
+      direction: rtl;
+      background-color: #f4f4f4; /* خلفية بيضاء فاتحة */
+      color: #333333; /* لون النص داكن لكن ليس أسود */
     }
     .container {
-      background: #F4F4F4; /* خلفية فاتحة للصندوق */
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1), -5px -5px 15px rgba(255, 255, 255, 0.05);
-      max-width: 600px;
-      margin: auto;
-      display: none; /* إخفاء جميع الصفحات عند البداية */
+      display: none;
+      margin: 20px auto;
+      padding: 20px;
+      background: #ffffff; /* صندوق أبيض */
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* تأثير الظل الخفيف */
+      max-width: 400px;
+      border: 3px solid #e0e0e0; /* إطار رمادي فاتح */
     }
-    .active {
-      display: block; /* الصفحة النشطة فقط تظهر */
+    .container.active {
+      display: block;
     }
     .header {
-      font-size: 2.5em;
-      font-weight: 300;
-      color: #FF66B2; /* وردي فاتح */
-      margin-bottom: 20px;
-    }
-    .arabic-calligraphy {
-      font-family: 'Amiri', serif;
-      font-size: 3em;
-      color: #FF66B2; /* وردي فاتح */
-      margin-top: 20px;
-    }
-    .button {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      font-size: 1.5em;
+      font-size: 2em;
       font-weight: bold;
-      margin: 15px 0;
-      border: none;
-      border-radius: 10px;
-      background: #FF66B2; /* وردي فاتح */
-      color: #1E1E1E;
-      cursor: pointer;
-      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4), -3px -3px 8px rgba(255, 255, 255, 0.05);
-    }
-    .button:hover {
-      background: #FF3385; /* وردي أغمق عند التمرير */
-    }
-    label {
-      font-size: 1.3em;
-      color: #FF66B2; /* وردي فاتح */
-      display: block;
-      margin-top: 15px;
-    }
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      font-size: 1.3em;
-      border: none;
-      border-radius: 10px;
+      color: #333;
+      padding: 20px 0;
       text-align: center;
-      background: #EEEEEE; /* خلفية فاتحة للحقل */
-      color: #FF66B2; /* وردي فاتح */
-      box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.1), inset -3px -3px 8px rgba(255, 255, 255, 0.05);
+      background: #ffffff; /* خلفية بيضاء */
+      border-bottom: 3px solid #e0e0e0; /* فاصل بسيط باللون الرمادي الفاتح */
     }
-    .result {
-      margin-top: 20px;
-      font-size: 1.8em;
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #e0e0e0; /* إطار رمادي فاتح */
+    }
+    button {
+      background: #f5f5f5; /* لون زر أبيض فاتح */
+      color: #333333; /* نص الزر باللون الداكن */
+      cursor: pointer;
       font-weight: bold;
-      color: #FF66B2; /* وردي فاتح */
-      background: #EEEEEE; /* خلفية فاتحة للناتج */
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.1), inset -3px -3px 8px rgba(255, 255, 255, 0.05);
+      border: 1px solid #e0e0e0; /* إطار زر خفيف */
     }
-    .notice {
-      font-size: 1.2em;
-      color: #FF3333; /* أحمر لتمييز الملاحظات */
-      margin-top: 20px;
+    button:hover {
+      background: #e0e0e0; /* تغيير لون الزر عند التمرير */
     }
-    .disabled {
-      background-color: #d3d3d3;
-      pointer-events: none;
+    .result, .effects, .overall {
+      margin: 10px 0;
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+    .effects p, .result p, .overall p {
+      color: #666666; /* لون نص التأثيرات والنتائج بلون رمادي هادئ */
     }
   </style>
 </head>
 <body>
 
-  <!-- الصفحة الرئيسية -->
-  <div class="container active" id="mainMenu">
-    <div class="header">خبير</div>
-    <div class="arabic-calligraphy">خبير</div> <!-- اسم "خبير" بخط كوفي -->
-    <button class="button" onclick="showPage('minerals')">🔬 صنع وصفات باستخدام المعادن</button>
+  <!-- اسم خبير في الجزء العلوي -->
+  <div class="header">
+    <span>خبير</span>
   </div>
 
-  <!-- صفحة المعادن (حساب المعادن عبر إدخال المغنيسيوم والصوديوم) -->
-  <div class="container" id="minerals">
-    <div class="header">صنع وصفات باستخدام المعادن</div>
+  <!-- الصفحة الرئيسية -->
+  <div id="mainMenu" class="container active">
+    <h2>إعداد مياه القهوة</h2>
+    <button onclick="showPage('waterSetup')">بدء الإعداد</button>
+  </div>
 
-    <label for="recipeSelect">اختر وصفة جاهزة:</label>
+  <!-- صفحة إعداد المياه -->
+  <div id="waterSetup" class="container">
+    <h2>إعداد المياه</h2>
+    
+    <label for="recipeSelect">اختر الوصفة:</label>
     <select id="recipeSelect" onchange="loadRecipe()">
       <option value="custom">وصفة مخصصة</option>
       <option value="moonlight">Moonlight</option>
@@ -118,112 +89,101 @@
       <option value="barista">Barista</option>
     </select>
 
-    <label for="mg">أدخل كمية MgSO₄ (المغنيسيوم) بالجرام:</label>
-    <input type="number" id="mg" step="0.01" oninput="calculateMinerals()" />
-
-    <label for="na">أدخل كمية NaHCO₃ (الصوديوم) بالجرام:</label>
-    <input type="number" id="na" step="0.01" oninput="calculateMinerals()" />
-
     <label for="liters">عدد اللترات:</label>
-    <input type="number" id="liters" min="0.5" step="0.1" value="1" oninput="calculateMinerals()" /><div class="result" id="resultsMinerals">أدخل القيم لحساب ناتج GH و KH.</div>
+    <input type="number" id="liters" value="1" min="0.1" step="0.1">
 
-    <div class="notice" id="recipeNotice"></div>
-    <button class="button" onclick="goHome()">🔙 العودة للقائمة</button>
+    <label for="mg">المغنيسيوم (mg):</label>
+    <input type="number" id="mg" step="0.001">
+
+    <label for="na">الصوديوم (na):</label>
+    <input type="number" id="na" step="0.001">
+
+    <div class="effects" id="recipeNotice"></div>
+    <div class="result" id="resultsMinerals"></div>
+    <div class="overall" id="overallAcceptability"></div>
+
+    <button onclick="goHome()">الرجوع</button>
   </div>
 
   <script>
-    // إظهار الصفحة المطلوبة
     function showPage(page) {
       document.querySelectorAll(".container").forEach(el => el.classList.remove("active"));
       document.getElementById(page).classList.add("active");
     }
-
-    // العودة للقائمة الرئيسية
     function goHome() {
       showPage("mainMenu");
     }
 
-    // حساب GH وKH بناءً على المغنيسيوم (MgSO₄) والصوديوم (NaHCO₃) وعدد اللترات
+    function loadRecipe() {
+      var recipe = document.getElementById("recipeSelect").value;
+      let mgInput = document.getElementById("mg");
+      let naInput = document.getElementById("na");
+      let litersInput = document.getElementById("liters");
+
+      const recipes = {
+        moonlight: { mg: 0.089, na: 0.025, description: "Moonlight يضيف لمسة من الحموضة المعتدلة مع توازن الفاكهة." },
+        sunrise: { mg: 0.049, na: 0.134, description: "Sunrise يزيد الفاكهية ويخفف من المرارة مع تأثيرات ليمونية." },
+        ocean: { mg: 0.148, na: 0.151, description: "Ocean يعطي إحساسًا قويًا بالحموضة والمنعش." },
+        hinDown1: { mg: 0.243, na: 0.034, description: "Hin Down 1 يضيف توازن بين الحموضة والمرارة مع نكهة غنية." },
+        hinDown2: { mg: 0.243, na: 0.052, description: "Hin Down 2 مشابه ولكن يضيف مرارة أعمق." },
+        barista: { mg: 0.197, na: 0.067, description: "Barista يوفر طعمًا متوازنًا مع لمسة من الفاكهية." }
+      };
+
+      if (recipe === "custom") {
+        mgInput.disabled = false;
+        naInput.disabled = false;
+        mgInput.value = "";
+        naInput.value = "";
+        document.getElementById("recipeNotice").innerHTML = "يمكنك تعديل الوصفة المخصصة.";
+      } else {
+        let liters = parseFloat(litersInput.value) || 1;
+        mgInput.disabled = true;
+        naInput.disabled = true;
+        mgInput.value = (recipes[recipe].mg * liters).toFixed(3);
+        naInput.value = (recipes[recipe].na * liters).toFixed(3);
+        document.getElementById("recipeNotice").innerHTML = recipes[recipe].description;
+      }
+      calculateMinerals();
+    }
+
+    document.getElementById("liters").addEventListener("input", loadRecipe);
+    document.getElementById("mg").addEventListener("input", calculateMinerals);
+    document.getElementById("na").addEventListener("input", calculateMinerals);
+
     function calculateMinerals() {
       let mg = parseFloat(document.getElementById("mg").value) || 0;
       let na = parseFloat(document.getElementById("na").value) || 0;
       let liters = parseFloat(document.getElementById("liters").value) || 1;
 
-      // الصيغ العكسية:
-      // GH = (MgSO₄ (غرام) × (98.7 ÷ 0.243)) ÷ عدد اللترات
-      // KH = (NaHCO₃ (غرام) × (20.3 ÷ 0.034)) ÷ عدد اللترات
-      let ghResult = (mg * (98.7 / 0.243)) / liters;
-      let khResult = (na * (20.3 / 0.034)) / liters;
+      let ghResult = (mg * (98.7 / 0.243)) / liters; // حساب GH (عسر الماء)
+      let khResult = (na * (20.3 / 0.034)) / liters; // حساب KH (القلوية)
 
       document.getElementById("resultsMinerals").innerHTML = 
-        `<p><strong>GH (العسر العام):</strong> ${ghResult.toFixed(1)}</p>
-         <p><strong>KH (القلوية):</strong> ${khResult.toFixed(1)}</p>`;
+        `<p>عسر الماء العام (GH): ${ghResult.toFixed(1)}</p>
+         <p>القلوية (KH): ${khResult.toFixed(1)}</p>`;
 
-      displayRecipeEffect(mg, na); // عرض تأثير الوصفة
-    }
+      // تقديم تأثير المغنيسيوم والصوديوم فقط مرة واحدة
+      let mgEffect = "المغنيسيوم يمكن أن يضيف طابعًا حامضيًا معتدلًا وتوازنًا في النكهات.";
+      let naEffect = "الصوديوم قد يخفف من المرارة ويضيف نكهة أكثر حلاوة.";
+      document.getElementById("recipeNotice").innerHTML += `<p>${mgEffect}</p><p>${naEffect}</p>`;
 
-    // عرض تأثير الوصفة بناءً على القيم المدخلة
-    function displayRecipeEffect(mg, na) {
-      let effectText = "";
-      
-      if (mg > 0.1 && na > 0.1) {
-        effectText = "الوصفة تحتوي على مستويات عالية من المغنيسيوم والصوديوم، مما قد يؤدي إلى نكهة أكثر حموضة ومرارة.";
-      } else if (mg > 0.1) {
-        effectText = "الوصفة تحتوي على مستوى مغنيسيوم مرتفع، مما قد يعزز الحلاوة ويقلل الحموضة.";
-      } else if (na > 0.1) {
-        effectText = "الوصفة تحتوي على مستوى صوديوم مرتفع، مما قد يزيد من مرارة القهوة.";
-      } else {
-        effectText = "الوصفة تحتوي على توازن معتدل بين المغنيسيوم والصوديوم، مما قد يعطي نكهة متوازنة.";
+      // تقييم الصلاحية بناءً على قيم GH و KH
+      let waterStatus = "صالح";
+      let waterColor = "#4CAF50"; // اللون الأخضر يعني صالح
+
+      if (ghResult > 100) {
+        waterStatus = "غير صالح للقهوة";
+        waterColor = "#D32F2F"; // اللون الأحمر يعني غير صالح
       }
 
-      document.getElementById("recipeNotice").innerHTML = effectText;
-    }
-
-    // تحميل الوصفة المحددة من القائمة
-    function loadRecipe() {
-      var recipe = document.getElementById("recipeSelect").value;
-      let noticeText = '';
-
-      let inputs = document.querySelectorAll('input');
-      
-      // تمكين الحقول مباشرة عند اختيار "وصفة مخصصة"
-      if (recipe === "custom") {
-        inputs.forEach(input => input.disabled = false);  // تمكين الحقول
-        document.getElementById("recipeNotice").innerHTML = "يمكنك الآن تعديل الوصفة المخصصة.";
-      } else {
-        inputs.forEach(input => input.disabled = true);  // تعطيل الحقول
-
-        // تحديد التأثيرات الخاصة بالوصفات الجاهزة
-        if (recipe === "moonlight") {
-          document.getElementById("mg").value = 0.089;
-          document.getElementById("na").value = 0.025;
-          noticeText = "الوصفة Moonlight تحتوي على مستوى مغنيسيوم وصوديوم معتدل. قد تجعل القهوة أكثر حموضة وتوازن النكهة بشكل جيد.";
-        } else if (recipe === "sunrise") {
-          document.getElementById("mg").value = 0.049;
-          document.getElementById("na").value = 0.134;
-          noticeText = "الوصفة Sunrise تحتوي على نسبة صوديوم مرتفعة قد تؤثر على الحلاوة وتزيد من المرارة.";
-        } else if (recipe === "ocean") {
-          document.getElementById("mg").value = 0.148;
-          document.getElementById("na").value = 0.151;
-          noticeText = "الوصفة Ocean تحتوي على نسبة مغنيسيوم وصوديوم مرتفعة. قد تضيف طعماً مرًا وحموضة عالية.";
-        } else if (recipe === "hinDown1") {
-          document.getElementById("mg").value = 0.243;
-          document.getElementById("na").value = 0.034;
-          noticeText = "الوصفة Hin Down 1 تحتوي على نسبة مغنيسيوم عالية، قد تعزز الحلاوة وتقلل من الحموضة.";
-        } else if (recipe === "hinDown2") {
-          document.getElementById("mg").value = 0.243;
-          document.getElementById("na").value = 0.052;
-          noticeText = "الوصفة Hin Down 2 تحتوي على توازن جيد بين المعادن، مما قد يساعد في تخفيف المرارة وتحسين النكهة.";} else if (recipe === "barista") {
-          document.getElementById("mg").value = 0.197;
-          document.getElementById("na").value = 0.067;
-          noticeText = "الوصفة Barista مناسبة للباريستا، تحتوي على توازن بين الحلاوة والمرارة مع تأثير معتدل على النكهة.";
-        }
+      if (khResult > 100) {
+        waterStatus = "غير صالح للقهوة";
+        waterColor = "#D32F2F"; // اللون الأحمر يعني غير صالح
       }
 
-      document.getElementById("recipeNotice").innerHTML = noticeText;
-      calculateMinerals();
+      document.getElementById("overallAcceptability").innerHTML = 
+        `<p style="color: ${waterColor};">${waterStatus}</p>`;
     }
   </script>
-
 </body>
 </html>
