@@ -77,6 +77,11 @@
       border-radius: 10px;
       box-shadow: inset 3px 3px 8px rgba(0, 0, 0, 0.1), inset -3px -3px 8px rgba(255, 255, 255, 0.05);
     }
+    .notice {
+      font-size: 1.2em;
+      color: #FF3333; /* أحمر لتمييز الملاحظات */
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -115,21 +120,20 @@
 
     <div class="result" id="resultsMinerals">أدخل القيم لحساب ناتج GH و KH.</div>
 
+    <div class="notice" id="recipeNotice"></div>
+
     <button class="button" onclick="goHome()">🔙 العودة للقائمة</button>
-  </div>
-
-  <!-- صفحة GH/KH (حسابات GH و KH مع خانة اللترات) -->
+  </div><!-- صفحة GH و KH -->
   <div class="container" id="gh_kh">
-    <div class="header">صنع وصفات عن طريق GH و KH</div><label for="gh_value">حدد GH المطلوب:</label>
-    <input type="number" id="gh_value" step="1" oninput="calculateGH_KH()">
+    <div class="header">صنع وصفات عن طريق GH و KH</div>
 
-    <label for="kh_value">حدد KH المطلوب:</label>
-    <input type="number" id="kh_value" step="1" oninput="calculateGH_KH()">
+    <label for="ghInput">أدخل قيمة GH:</label>
+    <input type="number" id="ghInput" oninput="calculateGHKH()">
 
-    <label for="liters_ghkh">عدد اللترات:</label>
-    <input type="number" id="liters_ghkh" min="0.5" step="0.1" value="1" oninput="calculateGH_KH()">
+    <label for="khInput">أدخل قيمة KH:</label>
+    <input type="number" id="khInput" oninput="calculateGHKH()">
 
-    <div class="result" id="resultsGH_KH">أدخل القيم لحساب المعادن.</div>
+    <div class="result" id="resultsGHKH">أدخل القيم لحساب الوصفة.</div>
 
     <button class="button" onclick="goHome()">🔙 العودة للقائمة</button>
   </div>
@@ -158,54 +162,48 @@
       let ghResult = (mg * (98.7 / 0.243)) / liters;
       let khResult = (na * (20.3 / 0.034)) / liters;
 
-      document.getElementById("resultsMinerals").innerHTML = `
-        <p><strong>GH (العسر العام):</strong> ${ghResult.toFixed(1)}</p>
-        <p><strong>KH (القلوية):</strong> ${khResult.toFixed(1)}</p>
-      `;
-    }
+      document.getElementById("resultsMinerals").innerHTML = GH: ${ghResult.toFixed(2)} | KH: ${khResult.toFixed(2)};
 
-    // حساب المعادن بناءً على GH و KH وعدد اللترات
-    function calculateGH_KH() {
-      let gh = parseFloat(document.getElementById("gh_value").value) || 0;
-      let kh = parseFloat(document.getElementById("kh_value").value) || 0;
-      let liters = parseFloat(document.getElementById("liters_ghkh").value) || 1;
+      // إضافة التأثيرات على الوصفة
+      let recipeNotice = document.getElementById("recipeNotice");
+      let selectedRecipe = document.getElementById("recipeSelect").value;
 
-      // الصيغ العكسية:
-      // MgSO₄ = (GH × 0.243) ÷ 98.7 × عدد اللترات
-      // NaHCO₃ = (KH × 0.034) ÷ 20.3 × عدد اللترات
-      let mgResult = (gh * 0.243) / 98.7 * liters;
-      let naResult = (kh * 0.034) / 20.3 * liters;
-
-      document.getElementById("resultsGH_KH").innerHTML = `
-        <p><strong>MgSO₄ (المغنيسيوم):</strong> ${mgResult.toFixed(2)} غرام</p>
-        <p><strong>NaHCO₃ (الصوديوم):</strong> ${naResult.toFixed(2)} غرام</p>
-      `;
-    }
-
-    // تحميل الوصفة المحددة من القائمة
-    function loadRecipe() {
-      var recipe = document.getElementById("recipeSelect").value;
-      if (recipe === "moonlight") {
-        document.getElementById("mg").value = 0.089;
-        document.getElementById("na").value = 0.025;
-      } else if (recipe === "sunrise") {
-        document.getElementById("mg").value = 0.049;
-        document.getElementById("na").value = 0.134;
-      } else if (recipe === "ocean") {
-        document.getElementById("mg").value = 0.148;
-        document.getElementById("na").value = 0.151;
-      } else if (recipe === "hinDown1") {
-        document.getElementById("mg").value = 0.243;
-        document.getElementById("na").value = 0.034;
-      } else if (recipe === "hinDown2") {
-        document.getElementById("mg").value = 0.243;
-        document.getElementById("na").value = 0.052;
-      } else if (recipe === "barista") {
-        document.getElementById("mg").value = 0.197;
-        document.getElementById("na").value = 0.067;
+      switch (selectedRecipe) {
+        case "moonlight":
+          recipeNotice.innerHTML = "هذه الوصفة تزيد الفاكهية وتقلل الحامضية.";
+          break;
+        case "sunrise":
+          recipeNotice.innerHTML = "هذه الوصفة تزيد الحلاوة وتقلل المرارة.";
+          break;
+        case "ocean":
+          recipeNotice.innerHTML = "هذه الوصفة تزيد المرارة وتقلل الفاكهية.";
+          break;
+        case "hinDown1":
+          recipeNotice.innerHTML = "هذه الوصفة تزيد الحامضية وتقلل الفاكهية.";
+          break;
+        case "hinDown2":
+          recipeNotice.innerHTML = "هذه الوصفة تزيد الحلاوة وتزيد الفاكهية.";
+          break;
+        case "barista":
+          recipeNotice.innerHTML = "هذه الوصفة تزيد الحامضية وتزيد المرارة.";
+          break;
+        case "custom":
+          recipeNotice.innerHTML = "تأثير هذه الوصفة يعتمد على المدخلات.";
+          break;
+        default:
+          recipeNotice.innerHTML = "";
       }
-      calculateMinerals();
+    }
+
+    // دالة حساب GH و KH بناءً على القيم المدخلة
+    function calculateGHKH() {
+      let gh = parseFloat(document.getElementById("ghInput").value) || 0;
+      let kh = parseFloat(document.getElementById("khInput").value) || 0;
+
+      let result = GH: ${gh} | KH: ${kh};
+      document.getElementById("resultsGHKH").innerHTML = result;
     }
   </script>
+
 </body>
 </html>
