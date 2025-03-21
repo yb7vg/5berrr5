@@ -162,10 +162,15 @@
         `<p>عسر الماء العام (GH): ${ghResult.toFixed(1)}</p>
          <p>القلوية (KH): ${khResult.toFixed(1)}</p>`;
 
-      // تقديم تأثير المغنيسيوم والصوديوم
-      let mgEffect = "المغنيسيوم يمكن أن يضيف طابعًا حامضيًا معتدلًا وتوازنًا في النكهات.";
-      let naEffect = "الصوديوم قد يخفف من المرارة ويضيف نكهة أكثر حلاوة.";
-      document.getElementById("recipeNotice").innerHTML += `<p>${mgEffect}</p><p>${naEffect}</p>`;
+      // تقديم تأثير المغنيسيوم والصوديوم مرة واحدة فقط
+      let effects = '';
+      if (mg > 0) {
+        effects += "<p>المغنيسيوم يمكن أن يضيف طابعًا حامضيًا معتدلًا وتوازنًا في النكهات.</p>";
+      }
+      if (na > 0) {
+        effects += "<p>الصوديوم قد يخفف من المرارة ويضيف نكهة أكثر حلاوة.</p>";
+      }
+      document.getElementById("recipeNotice").innerHTML = effects;
 
       // تقييم الصلاحية بناءً على قيم GH و KH
       let waterStatus = "صالح";
